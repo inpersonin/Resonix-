@@ -35,6 +35,8 @@ jobs:
 
       - name: Build
         working-directory: frontend
+        env:
+          VITE_BASE_PATH: /Resonix-/
         run: npm run build
 
       # GitHub Pages needs a .nojekyll file so it serves _assets correctly

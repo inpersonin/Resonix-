@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Resonix - AI Music Discovery</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "tertiary": "#eafff0",
+                "surface-container-highest": "#353437",
+                "primary-container": "#39ff14",
+                "on-secondary-container": "#83c2a9",
+                "outline": "#85967c",
+                "on-tertiary-fixed-variant": "#005236",
+                "surface-tint": "#2ae500",
+                "on-secondary-fixed-variant": "#0b513d",
+                "on-tertiary-container": "#006f4c",
+                "inverse-surface": "#e5e1e4",
+                "on-primary": "#053900",
+                "inverse-on-surface": "#313032",
+                "on-primary-container": "#107100",
+                "background": "#131315",
+                "outline-variant": "#3c4b35",
+                "on-background": "#e5e1e4",
+                "primary": "#efffe3",
+                "secondary": "#95d3ba",
+                "secondary-fixed": "#b0f0d6",
+                "on-secondary-fixed": "#002117",
+                "on-error": "#690005",
+                "primary-fixed-dim": "#2ae500",
+                "on-surface": "#e5e1e4",
+                "on-tertiary": "#003824",
+                "surface-dim": "#131315",
+                "error-container": "#93000a",
+                "error": "#ffb4ab",
+                "surface-bright": "#39393b",
+                "secondary-fixed-dim": "#95d3ba",
+                "on-primary-fixed": "#022100",
+                "surface-container-low": "#1c1b1d",
+                "surface": "#131315",
+                "surface-container-lowest": "#0e0e10",
+                "surface-container-high": "#2a2a2c",
+                "on-primary-fixed-variant": "#095300",
+                "surface-variant": "#353437",
+                "surface-container": "#201f22",
+                "secondary-container": "#0b513d",
+                "on-error-container": "#ffdad6",
+                "tertiary-fixed": "#6ffbbe",
+                "tertiary-container": "#69f6b9",
+                "primary-fixed": "#79ff5b",
+                "on-secondary": "#003829",
+                "on-tertiary-fixed": "#002113",
+                "inverse-primary": "#106e00",
+                "on-surface-variant": "#baccb0",
+                "tertiary-fixed-dim": "#4edea3"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "margin-mobile": "20px",
+                "gutter": "24px",
+                "container-max": "1440px",
+                "margin-desktop": "64px",
+                "unit": "4px"
+        },
+        "fontFamily": {
+                "label-mono": [
+                        "Inter"
+                ],
+                "headline-lg": [
+                        "Inter"
+                ],
+                "headline-lg-mobile": [
+                        "Inter"
+                ],
+                "display-xl": [
+                        "Inter"
+                ],
+                "body-md": [
+                        "Inter"
+                ]
+        },
+        "fontSize": {
+                "label-mono": [
+                        "12px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "40px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "display-xl": [
+                        "60px",
+                        {
+                                "lineHeight": "72px",
+                                "letterSpacing": "-0.04em",
+                                "fontWeight": "800"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "letterSpacing": "0em",
+                                "fontWeight": "400"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        body {
+            background-color: #09090B; /* Deep void base */
+            overflow-x: hidden;
+        }
+        .glass-surface {
+            background: rgba(19, 19, 21, 0.7);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        .glass-surface::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            z-index: 1;
+        }
+        .radium-glow {
+            box-shadow: 0 0 20px 0 rgba(57, 255, 20, 0.4);
+        }
+        .radium-text-glow {
+            text-shadow: 0 0 12px rgba(57, 255, 20, 0.5);
+        }
+        /* Background abstract glow */
+        .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -2;
+            opacity: 0.15;
+        }
+        .orb-1 { width: 600px; height: 600px; background: #39ff14; top: -100px; left: -100px; }
+        .orb-2 { width: 800px; height: 800px; background: #0b513d; bottom: -200px; right: -200px; opacity: 0.1; }
+        
+        /* Floating Elements Animation */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        @keyframes float-reverse {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(20px) rotate(-5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        
+        .floating-element {
+            position: absolute;
+            z-index: -1;
+            opacity: 0.1;
+            color: rgba(57, 255, 20, 0.4);
+            filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.2));
+        }
+        
+        .float-1 { top: 15%; left: 10%; animation: float 6s ease-in-out infinite; font-size: 48px; }
+        .float-2 { top: 25%; right: 15%; animation: float-reverse 8s ease-in-out infinite; font-size: 64px; }
+        .float-3 { bottom: 30%; left: 20%; animation: float 7s ease-in-out infinite; font-size: 56px; }
+        .float-4 { top: 60%; right: 10%; animation: float-reverse 9s ease-in-out infinite; font-size: 40px; }
+        
+        /* Background Shader Container */
+        #bg-shader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -3;
+            opacity: 0.3; /* Kept subtle to not wash out */
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="text-on-background font-body-md bg-[#09090B] min-h-screen flex flex-col relative antialiased">
+<!-- Background Shader -->
+<div id="bg-shader-container">
+<iframe class="w-full h-full border-0" srcdoc="{{DATA:SCREEN:SCREEN_4}}"></iframe>
+</div>
+<!-- Abstract Background Elements -->
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<!-- Floating Musical Elements -->
+<span class="material-symbols-outlined floating-element float-1 opacity-50 drop-shadow-[0_0_15px_rgba(57,255,20,0.4)] radium-text-glow" data-icon="music_note">music_note</span>
+<span class="material-symbols-outlined floating-element float-2 opacity-50 drop-shadow-[0_0_15px_rgba(57,255,20,0.4)] radium-text-glow" data-icon="headphones">headphones</span>
+<span class="material-symbols-outlined floating-element float-3 opacity-50 drop-shadow-[0_0_15px_rgba(57,255,20,0.4)] radium-text-glow" data-icon="album">album</span>
+<span class="material-symbols-outlined floating-element float-4 opacity-50 drop-shadow-[0_0_15px_rgba(57,255,20,0.4)] radium-text-glow" data-icon="queue_music">queue_music</span>
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-8 py-3 glass-surface rounded-full mt-4 mx-auto w-[95%] max-w-container-desktop bg-white/5 border border-white/20 backdrop-blur-[40px]">
+<div class="text-headline-lg font-headline-lg font-black tracking-tighter text-primary-container drop-shadow-[0_0_8px_rgba(57,255,20,0.4)]">
+            Resonix
+        </div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-primary-container border-b-2 border-primary-container pb-1 font-bold" href="#">Discover</a>
+<a class="text-on-surface-variant/80 hover:text-white transition-colors hover:bg-white/5 hover:text-white duration-300" href="#">Library</a>
+<a class="text-on-surface-variant/80 hover:text-white transition-colors hover:bg-white/5 hover:text-white duration-300" href="#">Studios</a>
+<a class="text-on-surface-variant/80 hover:text-white transition-colors hover:bg-white/5 hover:text-white duration-300" href="#">Trends</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant/80 hover:text-primary-container transition-colors duration-300 scale-95 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="search" style="font-variation-settings: 'FILL' 0;">search</span>
+</button>
+<button class="text-on-surface-variant/80 hover:text-primary-container transition-colors duration-300 scale-95 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="account_circle" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-grow pt-32 pb-24 px-margin-mobile md:px-margin-desktop flex flex-col items-center max-w-container-desktop mx-auto w-full z-10">
+<!-- Hero Section -->
+<section class="w-full flex flex-col items-center text-center mt-12 mb-20 relative">
+<h1 class="font-display-xl text-display-xl text-primary-container mb-6 max-w-4xl tracking-tighter drop-shadow-[0_4px_16px_rgba(57,255,20,0.3)]">
+                Music Recommendations, <br/><span class="text-white">Reimagined by AI</span>
+</h1>
+<p class="text-on-surface-variant text-xl max-w-2xl mb-12">
+                Harness neural networks to discover soundscapes tailored to your exact sonic profile.
+            </p>
+<!-- Ultra-glassy Input Card -->
+<div class="glass-surface w-full max-w-3xl rounded-3xl p-8 relative overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.8)] backdrop-blur-[60px] bg-white/5 border border-white/20 shadow-[inset_0_0_12px_rgba(57,255,20,0.1)]">
+<!-- Inner glow hint -->
+<div class="absolute inset-0 bg-gradient-to-br from-primary-container/5 to-transparent pointer-events-none"></div>
+<div class="relative z-10">
+<div class="flex flex-col md:flex-row gap-4 mb-6">
+<div class="relative flex-grow">
+<span class="material-symbols-outlined absolute left-4 top-1/2 transform -translate-y-1/2 text-on-surface-variant" data-icon="mic">mic</span>
+<input class="w-full bg-black/40 border-0 border-b-2 border-outline-variant focus:border-primary-container text-white placeholder:text-on-surface-variant/50 pl-12 pr-4 py-4 rounded-t-lg transition-colors focus:ring-0 focus:outline-none backdrop-blur-md" placeholder="Describe a vibe, an artist, or a tempo..." type="text"/>
+</div>
+<button class="bg-primary-container text-black font-bold py-4 px-8 rounded-lg hover:bg-[#2ae500] transition-colors radium-glow hover:shadow-[0_0_30px_0_rgba(57,255,20,0.6)] flex items-center justify-center gap-2 group">
+<span>Generate</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</button>
+</div>
+<!-- Song Chips -->
+<div class="flex flex-wrap gap-3 justify-center md:justify-start">
+<span class="px-4 py-2 rounded-full border border-primary-container/30 bg-primary-container/10 text-primary-container text-sm font-semibold flex items-center gap-2 cursor-pointer hover:border-primary-container hover:bg-primary-container/20 transition-colors backdrop-blur-md">
+<span class="material-symbols-outlined text-[16px]" data-icon="graphic_eq">graphic_eq</span> Deep House
+                        </span>
+<span class="px-4 py-2 rounded-full border border-white/10 bg-black/40 text-on-surface-variant text-sm flex items-center gap-2 cursor-pointer hover:border-white/30 hover:text-white transition-colors backdrop-blur-md">
+<span class="material-symbols-outlined text-[16px]" data-icon="album">album</span> 120 BPM
+                        </span>
+<span class="px-4 py-2 rounded-full border border-white/10 bg-black/40 text-on-surface-variant text-sm flex items-center gap-2 cursor-pointer hover:border-white/30 hover:text-white transition-colors backdrop-blur-md">
+<span class="material-symbols-outlined text-[16px]" data-icon="mood">mood</span> Melancholic
+                        </span>
+<span class="px-4 py-2 rounded-full border border-white/10 bg-black/40 text-on-surface-variant text-sm flex items-center gap-2 cursor-pointer hover:border-white/30 hover:text-white transition-colors backdrop-blur-md">
+<span class="material-symbols-outlined text-[16px]" data-icon="piano">piano</span> Synthwave
+                        </span>
+</div>
+</div>
+</div>
+</section>
+<!-- Generated Queue Section (Bento Grid Style) -->
+<section class="w-full max-w-5xl">
+<h2 class="font-headline-lg text-headline-lg text-white mb-8 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container" data-icon="queue_music">queue_music</span>
+                Neural Queue
+            </h2>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Primary Track Card (Large) -->
+<div class="md:col-span-8 glass-surface rounded-2xl p-6 flex flex-col md:flex-row gap-6 items-center md:items-start group hover:bg-white/5 transition-colors relative overflow-hidden backdrop-blur-[50px] bg-white/5 border border-white/20 shadow-[inset_0_0_12px_rgba(57,255,20,0.1)] backdrop-blur-[40px]">
+<div class="w-32 h-32 rounded-xl flex-shrink-0 bg-black/50 flex items-center justify-center relative overflow-hidden group-hover:radium-glow transition-shadow backdrop-blur-sm border border-white/5">
+<img class="w-full h-full object-cover opacity-80 mix-blend-screen absolute inset-0" data-alt="Abstract 3D rendering of glowing neon green sound waves and shattered glass spheres floating in a deep black void, highly detailed, cinematic lighting, sleek modern aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZQAhajxoFnDTPeR1RGx6XnwLCyEpB-WkdiTUL-RzKi2J7Jvq64LbHnZPHpOiu62UgedYw4J8TH7ZqMGLvlg1X-cEKXBkbOLnwkyLjwLziZ5NOlehsxnPt_1FRr2X_Rk8gZQRszPdASliEL-FRgRqMByQob6DM-R_hSv-WCSDVBDeuHrz2bOPUfoC0TwVvnZLmEqtY-AeHWFT8MK89RjJgqYwKaE9YJIEJx47ypKJeuZfafkjSz6TBY86dm0BWYqdnv1KsGcwE_f8"/>
+<button class="w-12 h-12 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center z-10 border border-primary-container/50 hover:bg-primary-container text-primary-container hover:text-black transition-all">
+<span class="material-symbols-outlined pl-1" data-icon="play_arrow" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<div class="flex-grow w-full">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="text-xl font-bold text-white group-hover:text-primary-container transition-colors">Neon Synthesis</h3>
+<p class="text-on-surface-variant">AI Generated • Ambient Techno</p>
+</div>
+<span class="text-on-surface-variant font-label-mono text-label-mono">4:12</span>
+</div>
+<!-- Energy Bar -->
+<div class="mt-6 w-full">
+<div class="flex justify-between text-xs font-label-mono text-on-surface-variant mb-2">
+<span>Energy Level</span>
+<span class="text-primary-container">87%</span>
+</div>
+<div class="h-2 w-full bg-black/50 rounded-full overflow-hidden border border-white/5 backdrop-blur-sm">
+<div class="h-full bg-primary-container rounded-full relative" style="width: 87%;">
+<div class="absolute inset-0 bg-white/30 w-full animate-[pulse_2s_ease-in-out_infinite]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Track Card -->
+<div class="md:col-span-4 glass-surface rounded-2xl p-6 flex flex-col gap-4 hover:bg-white/5 transition-colors backdrop-blur-[50px] bg-white/5 border border-white/20 shadow-[inset_0_0_12px_rgba(57,255,20,0.1)] backdrop-blur-[40px]">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-lg bg-black/50 relative overflow-hidden backdrop-blur-sm border border-white/5">
+<img class="w-full h-full object-cover opacity-70" data-alt="Macro shot of polished obsidian stone with thin veins of glowing radium green energy pulsing through cracks, dark and moody lighting, extreme detail, tech-noir aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPrOPqn6Y7rsPNRVnxyMn2tLVsG_oxZb1fOvfZ0LqJXUcyCCC6z_ZEyk1OI812PJfTCmsezavD_9LIODXjkk653Y2-GfRB69QTyCClfPdPfkEk4hNl5MwHWhjZ9g_Y8BE7OK6aqrt5iFkYBEf-VxhSbqYvmAbyBPX5wBHvtqvEueCLNkUxcF8DBuVXUxqxxLmMilOEb7bYfViDc0bcOor4JZWru16md1ZlKyImUId4XrNh1fNxBBtCMlT8jSw7d7JXk4Di7PgzOnY"/>
+</div>
+<div>
+<h4 class="font-bold text-white">Void Echoes</h4>
+<p class="text-sm text-on-surface-variant">Dark Synth</p>
+</div>
+</div>
+<!-- Small visualizer simulation -->
+<div class="flex items-end gap-1 h-8 mt-auto opacity-50">
+<div class="w-2 bg-primary-container rounded-t-sm h-3"></div>
+<div class="w-2 bg-primary-container rounded-t-sm h-6"></div>
+<div class="w-2 bg-primary-container rounded-t-sm h-4"></div>
+<div class="w-2 bg-primary-container rounded-t-sm h-8"></div>
+<div class="w-2 bg-primary-container rounded-t-sm h-2"></div>
+<div class="w-2 bg-primary-container rounded-t-sm h-5"></div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-gutter glass-surface border-t-0 border-t border-white/10 mt-auto z-40 rounded-t-3xl backdrop-blur-[40px] bg-white/5 border border-white/20 shadow-[inset_0_0_12px_rgba(57,255,20,0.1)]">
+<div class="text-headline-lg-mobile font-headline-lg-mobile font-black text-primary-container opacity-80 hover:opacity-100 transition-opacity">
+            Resonix
+        </div>
+<div class="text-on-surface-variant text-body-md font-body-md">
+            © 2024 Resonix AI. Engineered for Sound.
+        </div>
+<nav class="flex gap-6">
+<a class="text-on-surface-variant hover:text-white transition-colors duration-200" href="#">Terms</a>
+<a class="text-on-surface-variant hover:text-white transition-colors duration-200" href="#">Privacy</a>
+<a class="text-on-surface-variant hover:text-white transition-colors duration-200" href="#">API</a>
+<a class="text-on-surface-variant hover:text-white transition-colors duration-200" href="#">Support</a>
+</nav>
+</footer>
+</body></html>

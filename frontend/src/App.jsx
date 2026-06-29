@@ -5,6 +5,12 @@ import AudioWaveform from './components/AudioWaveform';
 import ServingArchitecture from './components/ServingArchitecture';
 import SceneBackground3D from './components/SceneBackground3D';
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? ''
+    : 'https://inpersonin-resonix.hf.space');
+
 /* ── Ripple helper ──────────────────────────────────────────── */
 function spawnRipple(e) {
   const btn = e.currentTarget;
@@ -109,7 +115,7 @@ export default function App() {
     }, 200);
 
     try {
-      const res = await fetch('/recommend', {
+      const res = await fetch(`${API_BASE_URL}/recommend`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ song: songVal.trim(), artist: artistVal?.trim() || '' }),

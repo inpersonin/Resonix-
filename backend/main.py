@@ -17,21 +17,30 @@ app.add_middleware(
 )
 
 class RecommendRequest(BaseModel):
-    songs: list[str]
+    songs: list[str] | None = None
     artists: list[str | None] | None = None
+    song: str | None = None
+    artist: str | None = None
 
 @app.post("/recommend")
 def recommend(req: RecommendRequest):
-    if not req.songs:
+    songs = req.songs or ([] if not req.song else [req.song])
+    if not songs:
         raise HTTPException(status_code=400, detail="Songs list cannot be empty")
-    
-    artists = req.artists or [None] * len(req.songs)
-    if len(artists) != len(req.songs):
+
+    if req.artists is not None:
+        artists = req.artists
+    elif req.song is not None:
+        artists = [req.artist]
+    else:
+        artists = [None] * len(songs)
+
+    if len(artists) != len(songs):
         raise HTTPException(status_code=400, detail="Songs and artists lists must have the same length")
         
     matched = []
     track_ids = []
-    for song, artist in zip(req.songs, artists):
+    for song, artist in zip(songs, artists):
         if not song or not song.strip():
             continue
         result = search_song(song.strip(), artist_hint=artist.strip() if artist else None)
